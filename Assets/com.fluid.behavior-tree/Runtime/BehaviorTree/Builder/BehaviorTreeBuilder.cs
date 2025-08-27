@@ -105,17 +105,20 @@ namespace CleverCrow.Fluid.BTs.Trees {
             return ParentTask<Parallel>(name);
         }
 
-        public BehaviorTreeBuilder Do (string name, Func<TaskStatus> action) {
+        public BehaviorTreeBuilder Do (string name, Func<TaskStatus> action, Action init = null, Action start = null, Action exit = null) {
             return AddNode(new ActionGeneric {
                 Name = name,
-                updateLogic = action
+                updateLogic = action,
+                initLogic = init,
+                startLogic = start,
+                exitLogic = exit
             });
         }
         
-        public BehaviorTreeBuilder Do (Func<TaskStatus> action) {
-            return Do("action", action);
+        public BehaviorTreeBuilder Do (Func<TaskStatus> action, Action init = null, Action start = null, Action exit = null) {
+            return Do("action", action, init, start, exit);
         }
-        
+
         /// <summary>
         /// Return continue until time has passed
         /// </summary>
