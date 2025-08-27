@@ -15,6 +15,11 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         public EditorRuntimeUtilities EditorUtils => 
             _editorUtils ?? (_editorUtils = new EditorRuntimeUtilities());
 
+        public virtual void NewTick()
+        {
+            HasBeenActive = false;
+        }
+
         public virtual TaskStatus Update () {
 #if UNITY_EDITOR
             EditorUtils.EventActive.Invoke();

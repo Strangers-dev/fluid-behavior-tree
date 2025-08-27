@@ -6,6 +6,7 @@ using UnityEngine;
 namespace CleverCrow.Fluid.BTs.TaskParents {
     public abstract class TaskParentBase : GenericTaskBase, ITaskParent {
         private int _lastTickCount;
+        private bool _newTick = false;
 
         public IBehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
@@ -19,7 +20,20 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
 
         public GameObject Owner { get; set; }
 
+        public override void NewTick()
+        {
+            base.NewTick();
+
+            Children.ForEach(child => child.NewTick());
+            _newTick = true;
+        }
+
         public override TaskStatus Update () {
+            if (!_newTick)
+            {
+                NewTick();
+            }
+
             base.Update();
             UpdateTicks();
 
@@ -52,7 +66,9 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             return TaskStatus.Success;
         }
 
-        public virtual void Reset () {
+        public virtual void Reset () 
+        {
+            _newTick = false;
         }
 
         public virtual ITaskParent AddChild (ITask child) {

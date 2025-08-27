@@ -38,6 +38,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         float IconPadding { get; }
         bool HasBeenActive { get; }
 
+        void NewTick();
+
         /// <summary>
         /// Triggered every tick
         /// </summary>
